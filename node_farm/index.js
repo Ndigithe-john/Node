@@ -1,5 +1,6 @@
 const fs = require("fs");
 const http = require("http");
+const url = require("url");
 
 //////////////////////////////////////////////// FILES
 // Blocking, syncronous way
@@ -47,7 +48,19 @@ const http = require("http");
 ///////////////////////////////////////   SERVER
 
 const server = http.createServer((req, res) => {
-  res.end("Hello from the server");
+  const pathName = req.url;
+
+  if (pathName === "/" || pathName === "/overview") {
+    res.end("This is the overview");
+  } else if (pathName === "/product") {
+    res.end("Thsi is the product");
+    console.log("This is the product");
+  } else {
+    res.writeHead(404, {
+      "content-type": "text/html",
+    });
+    res.end("This page could not be found");
+  }
 });
 
 server.listen(8000, "127.0.0.1", () => {
