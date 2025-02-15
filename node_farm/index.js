@@ -47,6 +47,10 @@ const url = require("url");
 
 ///////////////////////////////////////   SERVER
 
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const productData = JSON.parse(data);
+console.log(productData);
+
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
@@ -55,11 +59,18 @@ const server = http.createServer((req, res) => {
   } else if (pathName === "/product") {
     res.end("Thsi is the product");
     console.log("This is the product");
+  } else if (pathName === "/api/v1") {
+    res.writeHead(200, {
+      "Content-type": "application/json",
+    });
+    res.end(data);
+    // res.end("API");
   } else {
     res.writeHead(404, {
-      "content-type": "text/html",
+      "Content-type": "text/html",
+      "my-own-header": "hello world",
     });
-    res.end("This page could not be found");
+    res.end("<h1>This page could not be found</h1>");
   }
 });
 
