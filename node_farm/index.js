@@ -2,6 +2,8 @@ const fs = require("fs");
 const http = require("http");
 const url = require("url");
 
+const replaceTemplate = require("./modules/replaceTemplate");
+
 //////////////////////////////////////////////// FILES
 // Blocking, syncronous way
 // const textIn = fs.readFileSync("./txt/input.txt", "utf-8");
@@ -46,20 +48,6 @@ const url = require("url");
 // console.log("after");
 
 ///////////////////////////////////////   SERVER
-
-const replaceTemplate = (temp, product) => {
-  let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName);
-  output = output.replace(/{%IMAGE%}/g, product.image);
-  output = output.replace(/{%PRODUCTPRICE%}/g, product.price);
-  output = output.replace(/{%FROM%}/g, product.from);
-  output = output.replace(/{%PRODUCTNUTRIENTS%}/g, product.nutrients);
-  output = output.replace(/{%QUANTITY%}/g, product.quantity);
-  output = output.replace(/{%DESCRIPTION%}/g, product.description);
-  if (!product.organic)
-    output = output.replace(/{%NOT_ORGANIC%}/g, "not-organic");
-  output = output.replace(/{%ID%}/g, product.id);
-  return output;
-};
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
 const tempOverview = fs.readFileSync(
