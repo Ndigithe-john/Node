@@ -1,0 +1,11 @@
+{
+  "name": "node_farm",
+  "version": "1.0.0",
+  "description": "Nodejs journey",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "john",
+  "license": "ISC"
+}
