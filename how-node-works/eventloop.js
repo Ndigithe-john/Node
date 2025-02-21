@@ -16,6 +16,22 @@ fs.readFile('./test-file.txt', (err, data) => {
 
   process.nextTick(() => console.log('Process.nextTick'));
 
+  crypto.pbkdf2Sync('password', 'salt', 100000, 1024, 'sha512', () => {
+    console.log(Date.now() - start, 'Password encrypted');
+  });
+  crypto.pbkdf2Sync('password', 'salt', 100000, 1024, 'sha512', () => {
+    console.log(Date.now() - start, 'Password encrypted');
+  });
+  crypto.pbkdf2Sync('password', 'salt', 100000, 1024, 'sha512', () => {
+    console.log(Date.now() - start, 'Password encrypted');
+  });
+  crypto.pbkdf2Sync('password', 'salt', 100000, 1024, 'sha512', () => {
+    console.log(Date.now() - start, 'Password encrypted');
+  });
+  crypto.pbkdf2Sync('password', 'salt', 100000, 1024, 'sha512', () => {
+    console.log(Date.now() - start, 'Password encrypted');
+  });
+
   crypto.pbkdf2('password', 'salt', 100000, 1024, 'sha512', () => {
     console.log(Date.now() - start, 'Password encrypted');
   });
