@@ -3,6 +3,18 @@ const fs = require('fs');
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
+
+exports.checkId = (req, res, next, val) => {
+  console.log(`The id is ${val}`);
+  const { id } = req.params;
+  if (+id > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+  next();
+};
 exports.getAllTours = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -19,13 +31,7 @@ exports.getTour = (req, res) => {
   const { id } = req.params;
 
   const tour = tours.find((el) => el.id === +id);
-  // if (+id > tours.length) {
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid Id',
-    });
-  }
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -38,10 +44,10 @@ exports.createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
 
-  // tours.push(newTour)
+  tours.push(newTour);
   // tours = [...tours, newTour]; if we use let we can modify tours
   fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
+    `${__dirname}/../dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
     (err) => {
       console.log(err);
@@ -56,15 +62,6 @@ exports.createTour = (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-  const { id } = req.params;
-  // const tour = tours.find((el) => el.id === +id);
-  // if (!tour) {
-  if (+id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -73,14 +70,6 @@ exports.updateTour = (req, res) => {
   });
 };
 exports.deleteTour = (req, res) => {
-  const { id } = req.params;
-
-  if (+id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
   res.status(204).json({
     status: 'success',
     data: null,
