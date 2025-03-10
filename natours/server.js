@@ -25,18 +25,41 @@ const tourSchema = new mongoose.Schema({
     required: [true, 'A tour must have a price'],
   },
 });
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'User must have a name'],
+  },
+  gender: {
+    type: String,
+    default: 'Male',
+  },
+  age: {
+    type: Number,
+    required: [true, 'Age field cannot be empty'],
+  },
+});
 
 const Tour = mongoose.model('Tour', tourSchema);
+const User = mongoose.model('User', userSchema);
 
 const testTour = new Tour({
-  name: 'The Forest Hiker2',
-
+  name: 'The Forest Hiker3',
   price: 800,
 });
+const testUser = new User({
+  name: 'John Doe',
+  age: 22,
+});
+
 testTour
   .save()
   .then((doc) => console.log(doc))
   .catch((err) => console.log('Error', err));
+testUser
+  .save()
+  .then((doc) => console.log(doc))
+  .catch((err) => console.log('User Error!: ', err));
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
