@@ -1,6 +1,6 @@
 // const fs = require('fs');
 
-const Tour = require('./../models/tourModel');
+const TourModel = require('./../models/tourModel');
 
 // const tours = JSON.parse(
 //   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
@@ -8,7 +8,7 @@ const Tour = require('./../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    const tours = await TourModel.find();
 
     res.status(200).json({
       status: 'success',
@@ -27,7 +27,7 @@ exports.getAllTours = async (req, res) => {
 
 exports.getTour = async (req, res) => {
   try {
-    const tour = await Tour.findById(req.params.id);
+    const tour = await TourModel.findById(req.params.id);
     // const atour = await Tour.findOne({ _id: req.params.id });
     // console.log(atour);
 
@@ -54,7 +54,7 @@ exports.createTour = async (req, res) => {
   //Method 2 of creating new tours
 
   try {
-    const newTour = await Tour.create(req.body);
+    const newTour = await TourModel.create(req.body);
 
     res.status(201).json({
       status: 'success',
@@ -73,10 +73,14 @@ exports.createTour = async (req, res) => {
 
 exports.updateTour = async (req, res) => {
   try {
-    const updatedTour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedTour = await TourModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
     res.status(200).json({
       status: 'success',
       data: {

@@ -50,6 +50,6 @@ const tourSchema = new mongoose.Schema({
   startDates: [Date],
 });
 
-const Tour = mongoose.model('Tour', tourSchema);
+const TourModel = mongoose.model('Tour', tourSchema);
 
-module.exports = Tour;
+module.exports = TourModel;
