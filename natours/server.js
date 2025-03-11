@@ -3,16 +3,9 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 const app = require('./app');
 
-const DB_STRING = process.env.DATABASE.replace(
-  '<DB_PASSWORD>',
-  process.env.DATABASE_PASSWORD,
-);
-mongoose
-  // .connect(DB_STRING)
-  .connect(process.env.DATABASE_LOCAL)
-  .then(() => console.log('DB Connection established'));
-// console.log(app.get('env'));----This one is for express
-// console.log(process.env);----This is for node core
+const connectDB = require('./config/db.config');
+
+connectDB();
 
 const port = process.env.PORT || 3000;
 
