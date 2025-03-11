@@ -6,17 +6,6 @@ const Tour = require('./../models/tourModel');
 //   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
 // );
 
-exports.checkBody = (req, res, next) => {
-  const { name, price } = req.body;
-  if (!name || !price) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Missing name or price in your request body',
-    });
-  }
-  next();
-};
-
 exports.getAllTours = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -42,10 +31,29 @@ exports.getTour = (req, res) => {
   // });
 };
 
-exports.createTour = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-  });
+exports.createTour = async (req, res) => {
+  // Method 1 of creating tours
+  // const newTour=new Tour({})
+  // newTour.save().then()
+
+  //Method 2 of creating new tours
+
+  try {
+    const newTour = await Tour.create(req.body);
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      status: 'fail',
+      message: error.message,
+    });
+  }
 };
 
 exports.updateTour = (req, res) => {
