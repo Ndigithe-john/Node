@@ -8,14 +8,22 @@ const TourModel = require('./../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
+    //  Build Query
+    // Filtering
     const queryObj = { ...req.query };
     console.log(queryObj);
     const excludedField = ['page', 'sort', 'limit', 'fields'];
     excludedField.forEach((el) => delete queryObj[el]);
 
-    console.log(req.query, queryObj);
+    // Advanced Filtering
+    let querystr = JSON.stringify(queryObj);
+    querystr = querystr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    const query = TourModel.find(queryObj);
+    //  {difficulty:"easy",duration:{$gte:5}}
+    // { duration: { gte: '5' }, difficulty: 'easy',}
+    // gte gt lte lt
+    const query = TourModel.find(JSON.parse(querystr));
+
     // const query= TourModel.find()
     //   .where('duration')
     //   .equals(5)
@@ -33,7 +41,7 @@ exports.getAllTours = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       status: 'fail',
-      message: err,
+      message: error,
     });
   }
 };
