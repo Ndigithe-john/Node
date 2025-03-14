@@ -19,10 +19,11 @@ exports.getAllTours = async (req, res) => {
     let querystr = JSON.stringify(queryObj);
     querystr = querystr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    const query = TourModel.find(JSON.parse(querystr));
+    let query = TourModel.find(JSON.parse(querystr));
 
     // 2. SORTING
     if (req.query.sort) {
+      query = query.sort(req.query.sort);
     }
 
     // const query= TourModel.find()
