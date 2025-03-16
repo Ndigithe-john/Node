@@ -35,6 +35,17 @@ exports.getAllTours = async (req, res) => {
     //   .equals(5)
     //   .where('difficulty')
     //   .equals('easy');
+
+    // 3) FIELD LIMITING
+
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('');
+    }
+
+    //  EXECUTE QUERIES
     const tours = await query;
 
     res.status(200).json({
