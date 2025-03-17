@@ -5,13 +5,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'User must have a name'],
   },
-  gender: {
+  email: {
     type: String,
-    default: 'Male',
+    required: [true, 'User emeil is required'],
   },
-  age: {
-    type: Number,
-    required: [true, 'Please indicate your age'],
+  role: {
+    type: String,
+    default: 'user',
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  photo: String,
+  password: {
+    type: String,
+    required: [true, 'Please provide a password'],
   },
 });
 
