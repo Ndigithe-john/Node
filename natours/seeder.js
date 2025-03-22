@@ -13,6 +13,8 @@ const tours = JSON.parse(
 const users = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/users.json`, 'utf-8'),
 );
+
+//  Import Data into Database
 const importData = async () => {
   try {
     await TourModel.deleteMany();
@@ -27,6 +29,8 @@ const importData = async () => {
     process.exit(1);
   }
 };
+
+// Delete all data from my db
 const destroyData = async () => {
   try {
     await TourModel.deleteMany();

@@ -29,14 +29,14 @@ exports.getAllTours = async (req, res) => {
     } else {
       query = query.sort('-createdAt');
     }
-
+    // const query=TourModel.find({duration:5,difficulty:"easy"})
     // const query= TourModel.find()
     //   .where('duration')
     //   .equals(5)
     //   .where('difficulty')
     //   .equals('easy');
 
-    // 3) FIELD LIMITING
+    // 3) FIELD LIMITIN G
 
     if (req.query.fields) {
       const fields = req.query.fields.split(',').join(' ');
@@ -45,6 +45,17 @@ exports.getAllTours = async (req, res) => {
       query = query.select('-__v');
     }
 
+    // 4) PAGINATION
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+    // page=2&limit=1,  1-10 page 1, 11-20 page 2,......
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await TourModel.countDocuments();
+      if (skip >= numTours) throw new Error('This page does not exist');
+    }
     //  EXECUTE QUERIES
     const tours = await query;
 
@@ -58,7 +69,7 @@ exports.getAllTours = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       status: 'fail',
-      message: error,
+      message: error.message,
     });
   }
 };
