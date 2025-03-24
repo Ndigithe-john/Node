@@ -92,10 +92,16 @@ tourSchema.pre(/^find/, function (next) {
 });
 tourSchema.post(/^find/, function (docs, next) {
   console.log(`Query took ${Date.now() - this.start} milliseconds`);
-  console.log(docs);
+
   next();
 });
 
+//AGGREGATION MIDDLEWARE
+tourSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  console.log(this);
+  next();
+});
 //  To avoid getting the secret tour via id by using findOne  hook
 // tourSchema.pre('findOne', function (next) {
 //   this.find({ secretTour: { $ne: true } });
