@@ -21,7 +21,7 @@ const importData = async () => {
     await UserModel.deleteMany();
 
     await TourModel.insertMany(tours);
-    // await UserModel.insertMany(users);
+    await UserModel.insertMany(users);
     console.log('Data imported'.green.inverse);
     process.exit();
   } catch (error) {
