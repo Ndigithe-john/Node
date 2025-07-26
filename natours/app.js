@@ -72,6 +72,36 @@ app.post('/api/v1/tours', (req, res) => {
   //   res.send('Done');
 });
 
+app.patch('/api/v1/tours/:id', (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  const tour = tours.find((tour) => tour.id === +id);
+  if (!tour) {
+    return res.status(404).json({
+      status: 'fail',
+      message: "Couldn't find a tour with that id",
+    });
+  }
+
+  const updatedTour = { ...tour, name };
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: updatedTour,
+    },
+  });
+});
+
+app.delete('/api/v1/tours/:id', (req, res) => {
+  const { id } = req.params;
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running in port ${port}...`.bgYellow.bold);
