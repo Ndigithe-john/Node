@@ -1,70 +1,59 @@
-const fs = require('fs');
+const Tour = require('../model/tourModel');
 
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-);
+/**
+ * @Desc Create a route controller
+ * @route POST /api/v1/tours
+ * @access private
+ */
+const createTour = async (req, res) => {
+  try {
+    // const testTour=new Tour({})
+    // testTour.save().then()
 
-exports.checkID = (req, res, next, val) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
+    const newTour = await Tour.create(req.body);
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({
       status: 'fail',
-      message: 'Invalid ID',
+      message: error,
     });
   }
-  next();
 };
-
-exports.checkBody = (req, res, next) => {
-  const { name, price } = req.body;
-  if (!name || !price) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Missing name or price',
-    });
-  }
-  next();
-};
+/**
+ * @desc Get all tours
+ * @route GET /api/v1/tours
+ * @access public
+ */
 // Route handlers
-exports.getAllTours = (req, res) => {
+const getAllTours = async (req, res) => {
   res.status(200).json({
     status: 'success',
-    results: tours.length,
-    data: {
-      tours,
-    },
+    // results: tours.length,
+    // data: {
+    //   tours,
+    // },
   });
 };
 
-exports.getTour = (req, res) => {
+const getTour = async (req, res) => {
   const { id } = req.params;
-  const tour = tours.find((tour) => tour.id === +id);
+  // const tour = tours.find((tour) => tour.id === +id);
 
   res.status(200).json({
     status: 'success',
     data: {
-      tour,
+      // tour,
     },
   });
 };
-exports.createTour = (req, res) => {
-  const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, req.body);
-  tours.push(newTour);
-  fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
-    JSON.stringify(tours),
-    (err) => {
-      res.status(201).json({
-        status: 'success',
-        data: {
-          tour: newTour,
-        },
-      });
-    }
-  );
-};
-
-exports.updateTour = (req, res) => {
+const updateTour = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
 
@@ -85,9 +74,25 @@ exports.updateTour = (req, res) => {
     },
   });
 };
-exports.deleteTour = (req, res) => {
+const deleteTour = async (req, res) => {
   res.status(204).json({
     status: 'success',
     data: null,
   });
 };
+
+module.exports = { createTour, getAllTours, getTour, updateTour, deleteTour };
+
+/**
+ * Desk Check for id validity
+ */
+
+// exports.checkID = (req, res, next, val) => {
+//   if (req.params.id * 1 > tours.length) {
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'Invalid ID',
+//     });
+//   }
+//   next();
+// };
