@@ -1,7 +1,7 @@
 const Tour = require('../model/tourModel');
 
 /**
- * @Desc Create a route controller
+ * @Desc Create a tour
  * @route POST /api/v1/tours
  * @access private
  */
@@ -9,7 +9,6 @@ const createTour = async (req, res) => {
   try {
     // const testTour=new Tour({})
     // testTour.save().then()
-
     const newTour = await Tour.create(req.body);
 
     res.status(201).json({
@@ -26,12 +25,12 @@ const createTour = async (req, res) => {
     });
   }
 };
+
 /**
  * @desc Get all tours
  * @route GET /api/v1/tours
  * @access public
  */
-// Route handlers
 const getAllTours = async (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -42,6 +41,11 @@ const getAllTours = async (req, res) => {
   });
 };
 
+/**
+ * @desc Get a tour
+ * @route GET /api/v1/tours/:id
+ * @access public
+ */
 const getTour = async (req, res) => {
   const { id } = req.params;
   // const tour = tours.find((tour) => tour.id === +id);
@@ -53,6 +57,12 @@ const getTour = async (req, res) => {
     },
   });
 };
+
+/**
+ * @desc Get all tours
+ * @route GET /api/v1/tours/:id
+ * @access public
+ */
 const updateTour = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
@@ -74,6 +84,12 @@ const updateTour = async (req, res) => {
     },
   });
 };
+
+/**
+ * @desc Get all tours
+ * @route GET /api/v1/tours/:id
+ * @access public
+ */
 const deleteTour = async (req, res) => {
   res.status(204).json({
     status: 'success',
