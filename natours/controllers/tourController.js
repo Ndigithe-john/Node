@@ -56,15 +56,22 @@ const getAllTours = async (req, res) => {
  * @access public
  */
 const getTour = async (req, res) => {
-  const { id } = req.params;
-  // const tour = tours.find((tour) => tour.id === +id);
+  try {
+    const tour = await Tour.findById(req.params.id);
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      // tour,
-    },
-  });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(404).json({
+      status: 'fail',
+      message: 'Not found',
+    });
+  }
 };
 
 /**
