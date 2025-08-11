@@ -32,13 +32,22 @@ const createTour = async (req, res) => {
  * @access public
  */
 const getAllTours = async (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    // results: tours.length,
-    // data: {
-    //   tours,
-    // },
-  });
+  try {
+    const tours = await Tour.find();
+
+    res.status(200).json({
+      status: 'success',
+      results: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Internal Server Error',
+    });
+  }
 };
 
 /**
