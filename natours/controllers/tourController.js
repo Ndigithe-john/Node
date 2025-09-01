@@ -109,6 +109,20 @@ const updateTour = async (req, res) => {
  * @access public
  */
 const deleteTour = async (req, res) => {
+  try {
+    await Tour.findByIdAndDelete(req.params.id);
+
+    res.status(204).json({
+      status: 'success',
+      message: 'Doc Deleted successfully ',
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.staus(500).json({
+      status: 'fail',
+      message: 'Error deleting document',
+    });
+  }
   res.status(204).json({
     status: 'success',
     data: null,
