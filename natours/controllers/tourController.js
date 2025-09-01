@@ -43,6 +43,7 @@ const getAllTours = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error.message);
     res.status(404).json({
       status: 'fail',
       message: 'Internal Server Error',
@@ -81,25 +82,25 @@ const getTour = async (req, res) => {
  * @access public
  */
 const updateTour = async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
+  try {
+    const updatedTour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-  const tour = tours.find((tour) => tour.id === +id);
-  if (!tour) {
-    return res.status(404).json({
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour: updatedTour,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
       status: 'fail',
-      message: "Couldn't find a tour with that id",
+      message: 'Error updating document',
     });
   }
-
-  const updatedTour = { ...tour, name };
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: updatedTour,
-    },
-  });
 };
 
 /**
