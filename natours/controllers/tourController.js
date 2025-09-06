@@ -32,19 +32,22 @@ const createTour = async (req, res) => {
  * @access public
  */
 const getAllTours = async (req, res) => {
+  // const tours = await Tour.find()
+  //   .where('duration')
+  //   .equals(5)
+  //   .where('difficulty')
+  //   .equals('easy');
   try {
+// BUILD QUERY
     const queryObj = { ...req.query };
     const exludedFields = ['page', 'sort', 'limit', 'fields'];
     exludedFields.forEach((el) => delete queryObj[el]);
 
-    console.log(req.query);
-    console.log(queryObj);
-    // const tours = await Tour.find()
-    //   .where('duration')
-    //   .equals(5)
-    //   .where('difficulty')
-    //   .equals('easy');
-    const tours = await Tour.find(queryObj);
+
+    const query = Tour.find(queryObj);
+
+    
+    const tours = await query;
 
     res.status(200).json({
       status: 'success',
