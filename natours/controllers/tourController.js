@@ -38,11 +38,19 @@ const getAllTours = async (req, res) => {
   //   .where('difficulty')
   //   .equals('easy');
   try {
+    console.log(req.query);
     // BUILD QUERY
+    // filtering
     const queryObj = { ...req.query };
     const exludedFields = ['page', 'sort', 'limit', 'fields'];
     exludedFields.forEach((el) => delete queryObj[el]);
 
+    // Advanced filtering
+    const queryStr = JSON.stringify(queryObj);
+    queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    console.log(JSON.parse(queryStr));
+
+    // {difficulty:"easy", duration:{$gte:5}}
     const query = Tour.find(queryObj);
 
     // EXECUTE QUERY
