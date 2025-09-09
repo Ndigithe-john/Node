@@ -10,6 +10,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const app = express();
 
 // Middlewares
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 if (process.env.NODE_ENV === 'development') {
