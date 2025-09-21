@@ -58,7 +58,7 @@ const getAllTours = async (req, res) => {
       // sort('price ratingsAverage duration')
       query = query.sort(sortBy);
     } else {
-      query = query.sort(-createdAt);
+      query = query.sort('-createdAt');
     }
 
     // EXECUTE QUERY
